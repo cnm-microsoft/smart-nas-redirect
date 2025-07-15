@@ -2,14 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 
 // --- 配置项 ---
 
-// 1. 【固定】你的 NAS 域名，我们将其硬编码在这里。
-const NAS_DOMAIN = 'sub.stun.040726.xyz';
-
-// 2. 【动态】用于存储端口号的 TXT 记录所在的域名。
-const TXT_RECORD_DOMAIN = 'nas-target.yourdomain.com'; // 例如 nas-target.040726.xyz
-
-// 3. 如果解析失败，跳转到的备用 URL。
-const FALLBACK_URL = 'https://www.google.com/search?q=Error:NAS+port+not+found'; 
+// 从环境变量读取配置，提供默认值作为备用
+const NAS_DOMAIN = process.env.NAS_DOMAIN || 'sub.stun.040726.xyz';
+const TXT_RECORD_DOMAIN = process.env.TXT_RECORD_DOMAIN || 'nas-target.yourdomain.com';
+const FALLBACK_URL = process.env.FALLBACK_URL || 'https://www.google.com/search?q=Error:NAS+port+not+found';
+const DNS_CACHE_TIME = parseInt(process.env.DNS_CACHE_TIME || '60', 10);
+const DNS_TIMEOUT = parseInt(process.env.DNS_TIMEOUT || '5000', 10); 
 
 export const config = {
   matcher: '/:path*',
@@ -24,7 +22,8 @@ export async function middleware(request: NextRequest) {
       headers: {
         'accept': 'application/dns-json',
       },
-      next: { revalidate: 60 } // 缓存结果 60 秒
+      signal: AbortSignal.timeout(DNS_TIMEOUT), // 动态超时设置
+      next: { revalidate: DNS_CACHE_TIME } // 动态缓存时间
     });
 
     if (!response.ok) {

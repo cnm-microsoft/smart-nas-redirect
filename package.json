@@ -1,0 +1,22 @@
+{
+  "name": "nas-redirect-middleware",
+  "version": "1.0.0",
+  "description": "Dynamic NAS redirect middleware using DNS TXT records",
+  "main": "middleware.ts",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "^14.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
