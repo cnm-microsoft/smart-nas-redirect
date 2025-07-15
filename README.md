@@ -10,6 +10,20 @@
 - 🔧 环境配置：支持环境变量配置，便于部署
 - ⏱️ 超时控制：可配置的 DNS 查询超时时间
 
+## 项目结构
+
+```
+├── app/
+│   ├── layout.tsx          # 根布局组件
+│   └── page.tsx           # 首页组件
+├── middleware.ts          # 核心重定向中间件
+├── package.json          # 项目依赖配置
+├── tsconfig.json         # TypeScript 配置
+├── next.config.js        # Next.js 配置
+├── .env.example          # 环境变量模板
+└── README.md            # 项目文档
+```
+
 ## 快速开始
 
 ### 1. 安装依赖
