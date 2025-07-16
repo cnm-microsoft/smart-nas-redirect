@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from 'next/server';
 const NAS_DOMAIN = process.env.NAS_DOMAIN || 'sub.stun.040726.xyz';
 const TXT_RECORD_DOMAIN = process.env.TXT_RECORD_DOMAIN || 'nas-target.yourdomain.com';
 const DNS_CACHE_TIME = parseInt(process.env.DNS_CACHE_TIME || '60', 10);
-const DNS_TIMEOUT = parseInt(process.env.DNS_TIMEOUT || '5000', 10); 
+const DNS_TIMEOUT = parseInt(process.env.DNS_TIMEOUT || '5000', 10);
 
 export const config = {
   matcher: '/:path*',
@@ -14,9 +14,14 @@ export const config = {
 
 export async function middleware(request: NextRequest) {
   try {
+    // 获取请求的路径和查询参数
+    const url = new URL(request.url);
+    const pathname = url.pathname;
+    const searchParams = url.search;
+    
     // 查询存储着端口号的 TXT 记录
     const dnsQueryUrl = `https://cloudflare-dns.com/dns-query?name=${TXT_RECORD_DOMAIN}&type=TXT`;
-    
+
     const response = await fetch(dnsQueryUrl, {
       headers: {
         'accept': 'application/dns-json',
@@ -36,15 +41,15 @@ export async function middleware(request: NextRequest) {
     if (txtRecord && txtRecord.data) {
       // 从 TXT 记录中获取端口字符串，并去除引号
       const portStr = txtRecord.data.replace(/"/g, '');
-      
+
       // --- 核心修改点 ---
       // 验证获取到的是否是有效的端口号
       const port = parseInt(portStr, 10);
       if (!isNaN(port) && port > 0 && port <= 65535) {
-        
-        // 使用硬编码的域名和动态获取的端口，构建最终 URL
-        const redirectToUrl = `https://${NAS_DOMAIN}:${port}`;
-        
+
+        // 构建完整的重定向URL，包含路径和查询参数
+        const redirectToUrl = `https://${NAS_DOMAIN}:${port}${pathname}${searchParams}`;
+
         // 返回 307 临时重定向
         return NextResponse.redirect(redirectToUrl, 307);
       }
@@ -138,7 +143,7 @@ export async function middleware(request: NextRequest) {
     </div>
 </body>
 </html>`;
-    
+
     return new NextResponse(errorHtml, {
       status: 404,
       headers: {

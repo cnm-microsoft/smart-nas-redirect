@@ -68,11 +68,19 @@ npm run dev
 
 ## 工作原理
 
-1. 用户访问部署的域名
+1. 用户访问部署的域名（如：`https://your-domain.com/path/to/file?param=value`）
 2. 中间件查询指定域名的 TXT 记录获取端口号
 3. 验证端口号有效性（1-65535）
-4. 重定向到 `https://{NAS_DOMAIN}:{PORT}`
+4. 重定向到 `https://{NAS_DOMAIN}:{PORT}/path/to/file?param=value`
 5. 如果任何步骤失败，显示美观的404错误页面
+
+## 路径传递功能
+
+✨ **新功能**：现在支持完整的路径和查询参数传递！
+
+- **路径保持**：`/admin/dashboard` → `https://nas.domain.com:8080/admin/dashboard`
+- **查询参数保持**：`/files?folder=docs` → `https://nas.domain.com:8080/files?folder=docs`
+- **完整URL传递**：`/api/v1/data?id=123&type=json` → `https://nas.domain.com:8080/api/v1/data?id=123&type=json`
 
 ## 部署
 
