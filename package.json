@@ -1,7 +1,7 @@
 {
-  "name": "nas-redirect-middleware",
+  "name": "smart-nas-redirect",
   "version": "1.0.0",
-  "description": "Dynamic NAS redirect middleware using DNS TXT records",
+  "description": "Smart NAS redirect service using DNS TXT records for dynamic port resolution",
   "main": "middleware.ts",
   "scripts": {
     "dev": "next dev",

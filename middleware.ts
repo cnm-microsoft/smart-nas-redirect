@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 // --- 配置项 ---
 
 // 从环境变量读取配置，提供默认值作为备用
-const NAS_DOMAIN = process.env.NAS_DOMAIN || 'sub.stun.040726.xyz';
+const NAS_DOMAIN = process.env.NAS_DOMAIN || 'your-nas-domain.com';
 const TXT_RECORD_DOMAIN = process.env.TXT_RECORD_DOMAIN || 'nas-target.yourdomain.com';
 const DNS_CACHE_TIME = parseInt(process.env.DNS_CACHE_TIME || '60', 10);
 const DNS_TIMEOUT = parseInt(process.env.DNS_TIMEOUT || '5000', 10);
