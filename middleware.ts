@@ -50,8 +50,8 @@ export async function middleware(request: NextRequest) {
         // 构建完整的重定向URL，包含路径和查询参数
         const redirectToUrl = `https://${NAS_DOMAIN}:${port}${pathname}${searchParams}`;
 
-        // 返回 307 临时重定向
-        return NextResponse.redirect(redirectToUrl, 307);
+        // 返回 302 临时重定向
+        return NextResponse.redirect(redirectToUrl, 302);
       }
     }
 
